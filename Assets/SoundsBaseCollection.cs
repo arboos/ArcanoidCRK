@@ -11,6 +11,7 @@ public class SoundsBaseCollection : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -18,5 +19,10 @@ public class SoundsBaseCollection : MonoBehaviour
         }
     }
 
-    public AudioSource brickBrokeSound;
+    public AudioSource brickSound;
+    public AudioSource buttonSound;
+    public AudioSource bonusSound;
+    public AudioSource damageSound;
+    public AudioSource winSound;
+    public AudioSource loseSound;
 }

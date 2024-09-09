@@ -10,13 +10,14 @@ public class PlatformMovement : MonoBehaviour
     [Range(5f, 20f), SerializeField] private float speed;
     
     
-    private float deltaMovement;
-    private bool movedYet = false;
+    public float deltaMovement;
+    public bool movedYet = false;
 
-    private bool mouseWasDown = false;
-
-    public Vector3 lastMousePos;
+    public bool mouseWasDown = false;
+    
     public Vector3 currentMousePos;
+
+    public Ball ballStart;
     
     private void Update()
     {
@@ -27,23 +28,12 @@ public class PlatformMovement : MonoBehaviour
             currentMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             transform.position = new Vector3(Mathf.Clamp(currentMousePos.x, -15f, 15f), 0f, 0f);
-            // if (lastMousePos == Vector3.zero)
-            // {
-            //     lastMousePos = currentMousePos;
-            // }
-            // else
-            // {
-            //     deltaMovement = currentMousePos.x - lastMousePos.x;
-            // }
-            //
-            // lastMousePos = currentMousePos;
         }
         else
         {
-            lastMousePos = Vector3.zero;
-            if (mouseWasDown && deltaMovement == 0 && !GameManager.Instance.ball.isLaunched)
+            if (ballStart != null && mouseWasDown && deltaMovement == 0 && !ballStart.isLaunched)
             {
-                GameManager.Instance.ball.Launch();
+                ballStart.Launch();
             }
         }
         //Movement
@@ -53,9 +43,10 @@ public class PlatformMovement : MonoBehaviour
             0f);
         
         //Check if need to launch the ball
-        if (movedYet && deltaMovement == 0 && !GameManager.Instance.ball.isLaunched)
+        
+        if (ballStart != null && movedYet && deltaMovement == 0 && !ballStart.isLaunched)
         {
-            GameManager.Instance.ball.Launch();
+            ballStart.Launch();
         }
     }
     

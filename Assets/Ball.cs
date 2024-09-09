@@ -6,10 +6,6 @@ using Random = UnityEngine.Random;
 
 public class Ball : MonoBehaviour
 {
-    [Header("Ball stats")]
-    public float Speed;
-
-    [Header("Other")] 
     [SerializeField] private Material RedMaterial; 
     [SerializeField] private Material BlueMaterial;
     
@@ -19,7 +15,7 @@ public class Ball : MonoBehaviour
     private Rigidbody ballRigidbody;
     private MeshRenderer ballMeshRenderer;
 
-    private void Start()
+    private void Awake()
     {
         ballMeshRenderer = GetComponent<MeshRenderer>();
         
@@ -33,7 +29,7 @@ public class Ball : MonoBehaviour
         {
             transform.position = new Vector3(GameManager.Instance.playerTransform.position.x, transform.position.y, transform.position.z);
         }
-        print(Mathf.Sqrt(ballRigidbody.velocity.x * ballRigidbody.velocity.x + ballRigidbody.velocity.y * ballRigidbody.velocity.y));
+        //print(Mathf.Sqrt(ballRigidbody.velocity.x * ballRigidbody.velocity.x + ballRigidbody.velocity.y * ballRigidbody.velocity.y));
     }
 
     public void Launch()
@@ -41,9 +37,8 @@ public class Ball : MonoBehaviour
         ballRigidbody.isKinematic = false;
         Vector3 startVector = new Vector3(Random.Range(-3f, 3f), 1f, 0f);
         startVector.Normalize();
-        ballRigidbody.velocity = (startVector * Speed);
+        ballRigidbody.velocity = (startVector * GameManager.Instance.ballSpeed);
         isLaunched = true;
-        print("launch()");
     }
     
     public void ChangeColor()
@@ -64,7 +59,8 @@ public class Ball : MonoBehaviour
         {
             if(other.gameObject.name == "Platform_Top") ChangeColor(false);
             else ChangeColor(true);
-            ballRigidbody.velocity = ((transform.position - other.transform.position).normalized * Speed);
+            ballRigidbody.velocity = ((transform.position - other.transform.position).normalized *
+                                      GameManager.Instance.ballSpeed);
         }
     }
 }
