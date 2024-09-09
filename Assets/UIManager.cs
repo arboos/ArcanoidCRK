@@ -52,6 +52,8 @@ public class UIManager : MonoBehaviour
     {
         Time.timeScale = 1;
         SoundsBaseCollection.Instance.soundtrack.Play();
+        SoundsBaseCollection.Instance.winSound.Stop();
+        SoundsBaseCollection.Instance.loseSound.Stop();
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
@@ -60,6 +62,8 @@ public class UIManager : MonoBehaviour
     {
         Time.timeScale = 1;
         SoundsBaseCollection.Instance.soundtrack.Play();
+        SoundsBaseCollection.Instance.winSound.Stop();
+        SoundsBaseCollection.Instance.loseSound.Stop();
 
         SceneManager.LoadScene(index);
     }
@@ -68,6 +72,8 @@ public class UIManager : MonoBehaviour
     {
         Time.timeScale = 1;
         SoundsBaseCollection.Instance.soundtrack.Play();
+        SoundsBaseCollection.Instance.winSound.Stop();
+        SoundsBaseCollection.Instance.loseSound.Stop();
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
