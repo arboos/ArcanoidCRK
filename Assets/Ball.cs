@@ -55,12 +55,17 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
+
         if (other.gameObject.CompareTag("Platform"))
         {
             if(other.gameObject.name == "Platform_Top") ChangeColor(false);
             else ChangeColor(true);
             ballRigidbody.velocity = ((transform.position - other.transform.position).normalized *
                                       GameManager.Instance.ballSpeed);
+        }
+        if (!other.gameObject.CompareTag("Brick"))
+        {
+            SoundsBaseCollection.Instance.wallSound.Play();
         }
     }
 }

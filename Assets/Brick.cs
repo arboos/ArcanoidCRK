@@ -6,7 +6,8 @@ using Random = UnityEngine.Random;
 
 public class Brick : MonoBehaviour
 {
-    public bool isRed;
+    public bool isRed; 
+    private bool destroyed = false;
 
     private void Start()
     {
@@ -17,7 +18,7 @@ public class Brick : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ball"))
         {
-            if (isRed == other.gameObject.GetComponent<Ball>().isRed)
+            if (isRed == other.gameObject.GetComponent<Ball>().isRed && !destroyed)
             {
                 DestroyBrick();
             }
@@ -30,6 +31,7 @@ public class Brick : MonoBehaviour
 
     private void DestroyBrick()
     {
+        destroyed = true;
         SoundsBaseCollection.Instance.brickSound.Play();
         if (Random.value >= 0.8)
         {
@@ -38,9 +40,14 @@ public class Brick : MonoBehaviour
             spawnedBooster.transform.position = transform.position;
             SoundsBaseCollection.Instance.bonusSound.Play();
         }
+        
         GameManager.Instance.destroyedBricks++;
 
-        if (GameManager.Instance.destroyedBricks == GameManager.Instance.bricksCount)
+        GameManager.Instance.bricksText.text = "Блоков уничтожено: " + GameManager.Instance.destroyedBricks.ToString();
+        GameManager.Instance.ballSpeed += 0.07f;
+        GameManager.Instance.ballSpeed = Mathf.Clamp(GameManager.Instance.ballSpeed, 15f, 25f);
+        
+        if (GameManager.Instance.destroyedBricks >= GameManager.Instance.bricksCount)
         {
             GameManager.Instance.Win();
         }

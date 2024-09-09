@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -24,9 +26,10 @@ public class GameManager : MonoBehaviour
 
     public GameObject[] boosterPrefabs;
 
-    [Header("UI")]
-    public GameObject WinWindow;
-    public GameObject LoseWindow;
+    [SerializeField] private TextMeshPro healthText;
+    public TextMeshPro bricksText;
+
+
 
     private void Awake()
     {
@@ -60,6 +63,8 @@ public class GameManager : MonoBehaviour
     public void TakeHealth(int count)
     {
         currentHealth -= count;
+        healthText.text = "Жизни: " + currentHealth.ToString();
+        SoundsBaseCollection.Instance.damageSound.Play();
         if (currentHealth <= 0)
         {
             currentHealth = 0;
@@ -73,18 +78,21 @@ public class GameManager : MonoBehaviour
 
     public void Death()
     {
-        LoseWindow.SetActive(true);
+        UIManager.Instance.LoseWindow.SetActive(true);
         SoundsBaseCollection.Instance.loseSound.Play();
     }
 
-    public void Win()
+    public async void Win()
     {
         foreach (var ball in ballsActive)
         {
-            ballsActive.Remove(ball);
-            Destroy(ball);
+            ball.gameObject.SetActive(false);
         }
-        WinWindow.SetActive(true);
+        
+        await UniTask.Delay(TimeSpan.FromSeconds(1f));
+        
+        UIManager.Instance.WinWindow.SetActive(true);
+        SoundsBaseCollection.Instance.soundtrack.Pause();
         SoundsBaseCollection.Instance.winSound.Play();
     }
 }
